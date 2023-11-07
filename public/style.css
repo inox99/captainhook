@@ -2,49 +2,64 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 html,
-      body {
-        overflow: hidden;
-      }
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      header {
-        border-bottom: 6px solid #666;
-      }
-      header,
-      footer {
-        height: 128px;
-        background: #333;
-        color: #fff;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-      }
-      footer {
-        border-top: 6px solid #666;
-      }
-      ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        position: absolute;
-        justify-content: space-between;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(
-          100% - 600px
-        ); /* Abzüglich 60px Abstand auf beiden Seiten */
-      }
-      ul li {
-        margin: 0;
-      }
-      .menu-button {
-        text-decoration: none;
-        color: #fff;
-      }
-      #body {
-        min-height: calc(1080px - 256px - 153px);
-      }
+body {
+  overflow: hidden;
+}
+body {
+  margin: 0;
+  padding: 0;
+}
+header {
+  border-bottom: 6px solid #666;
+}
+header,
+footer {
+  height: 128px;
+  background: #333;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+footer {
+  border-top: 6px solid #666;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  position: absolute;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 600px); /* Abzüglich 60px Abstand auf beiden Seiten */
+}
+ul li {
+  margin: 0;
+}
+.menu-button {
+  text-decoration: none;
+  color: #fff;
+}
+#body {
+  min-height: calc(1080px - 256px - 153px);
+}
+
+.option-container{
+  width: 500px;
+  height: 50px;
+  background-color: orange;
+}
+
+.destroyer {
+  background-color: purple;
+}
+
+.destroyer-preview {
+  width: 20px;
+  height: 10px;
+  margin: 3px;
+}
+

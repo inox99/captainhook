@@ -12,22 +12,37 @@ function hideAllDivs() {
   }
 }
 
+function hideActiveDiv(){
+  if(document.getElementById("home").style.display === "block"){
+    document.getElementById("home").style.display = "none"
+  } 
+  else if(document.getElementById("headquarters").style.display === "block"){
+    document.getElementById("headquarters").style.display = "none"
+  } 
+  else if(document.getElementById("shop").style.display === "block"){
+    document.getElementById("shop").style.display = "none"
+  } 
+  else if(document.getElementById("options").style.display === "block"){
+    document.getElementById("options").style.display = "none"
+  }
+}
+
 document.getElementById("home-button").addEventListener("click", () => {
-  hideAllDivs();
+  hideActiveDiv();
   document.getElementById("home").style.display = "block";
 });
 
 document.getElementById("headquarters-button").addEventListener("click", () => {
-  hideAllDivs();
+  hideActiveDiv();
   document.getElementById("headquarters").style.display = "block";
 });
 
 document.getElementById("shop-button").addEventListener("click", () => {
-  hideAllDivs();
+  hideActiveDiv();
   document.getElementById("shop").style.display = "block";
 });
 
 document.getElementById("options-button").addEventListener("click", () => {
-  hideAllDivs();
+  hideActiveDiv();
   document.getElementById("options").style.display = "block";
 });
