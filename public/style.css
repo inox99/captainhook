@@ -50,6 +50,21 @@ ul li {
 .game-board {
   width: 200px;
   height: 200px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.block {
+  width: 20px;
+  height: 20px;
+  border: solid 1px orange;
+  box-sizing: border-box;
+}
+
+#gamesboard-container {
+  width: 500px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .option-container {
