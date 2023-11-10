@@ -159,3 +159,6 @@ function addShipPiece(ship) {
 ships.forEach((ship) => {
   addShipPiece(ship);
 });
+
+
+//DRAG FUNCTIONS FOR PLAYER SHIPS
