@@ -1,5 +1,8 @@
 
 Schiffe versenken
+
+https://github.com/TaiSonRZR/captainhook
+
 Spielkonzept:
 
 - es gibt eine Collection/Tabelle von Spielen (ShipMatchDv1 in shipmatch.js)
@@ -61,4 +64,3 @@ Spielkonzept:
                "turn" = 0
             und es gibt einen Sieger (Statistiken? gewonnene/verlorene spiele, Schusszahl, Zeiten messen, und und und )
             oder das Spiel abgebrochen wird "state" = ShipMatchState.canceled
-            
