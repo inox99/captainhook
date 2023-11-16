@@ -197,6 +197,8 @@ function dragStart(e) {
 
 function dragOver(e) {
   e.preventDefault();
+  const ship = ships[draggedShip.id]
+  highlightArea(e.target.id, ship)
 }
 
 function dropShip(e) {
@@ -212,4 +214,17 @@ function dropShip(e) {
 function highlightArea(startIndex, ship) {
   const allBoardBlocks = document.querySelectorAll("#player div");
   let isHorizontal = angle === 0;
+  const { shipBlocks, valid, notTaken } = getValidity(
+    allBoardBlocks,
+    isHorizontal,
+    startIndex,
+    ship
+  );
+
+  if (valid && notTaken) {
+    shipBlocks.forEach((shipBlock) => {
+      shipBlock.classList.add("hover");
+      setTimeout(() => shipBlock.classList.remove("hover"), 500);
+    });
+  }
 }
