@@ -178,6 +178,9 @@ ships.forEach((ship) => {
   addShipPiece("computer", ship);
 });
 
+
+//TODO: BUGFIXING -> OPTIONCONTAINER STILL CONTAINS SHIPS AFTER DRAGGED OUT, MEANS YOU CAN
+//                   DRAG OUT THE SAME SHIP MULTIPLE TIMES
 //DRAG FUNCTIONS FOR PLAYER SHIPS
 let draggedShip;
 const optionShips = Array.from(optionContainer.children);
@@ -257,6 +260,12 @@ function handleClick(e) {
     if (e.target.classList.contains("taken")) {
       e.target.classList.add("boom");
       infoDisplay.textContent = "You made a hit!";
+      let classes = Array.from(e.target.classList);
+      classes = classes.filter((className) => className !== "block");
+      classes = classes.filter((className) => className !== "boom");
+      classes = classes.filter((className) => className !== "taken");
+      playerHits.push(...classes);
+      console.log(playerHits);
     } else {
       e.target.classList.add("miss");
       infoDisplay.textContent = "You missed!";
