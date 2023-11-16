@@ -178,7 +178,6 @@ ships.forEach((ship) => {
   addShipPiece("computer", ship);
 });
 
-
 //TODO: BUGFIXING -> OPTIONCONTAINER STILL CONTAINS SHIPS AFTER DRAGGED OUT, MEANS YOU CAN
 //                   DRAG OUT THE SAME SHIP MULTIPLE TIMES
 //DRAG FUNCTIONS FOR PLAYER SHIPS
@@ -254,6 +253,7 @@ function startGame() {
     );
   }
 }
+startButton.addEventListener("click", startGame);
 
 function handleClick(e) {
   if (!gameOver) {
@@ -270,7 +270,53 @@ function handleClick(e) {
       e.target.classList.add("miss");
       infoDisplay.textContent = "You missed!";
     }
+
+    playerTurn = false;
+    const allBoardBlocks = document.querySelectorAll("#computer div");
+    allBoardBlocks.forEach((block) => block.replaceWith(block.cloneNode(true)));
+    setTimeout(computerGo, 3000);
   }
 }
 
-startButton.addEventListener("click", startGame);
+//Computer Turn
+function computerGo() {
+  if (!gameOver) {
+    turnDisplay.textContent = "Computers Turn";
+
+    setTimeout(() => {
+      let randomGo = Math.floor(Math.random() * width * width);
+      const allBoardBlocks = document.querySelectorAll("#player div");
+
+      if (
+        allBoardBlocks[randomGo].classList.contains("taken") &&
+        allPlayerBlocks[randomGo].classList.contains("boom")
+      ) {
+        computerGo();
+        return;
+      } else if (
+        allBoardBlocks[randomGo].classList.contains("taken") &&
+        !allPlayerBlocks[randomGo].classList.contains("boom")
+      ) {
+        allBoardBlocks[randomGo].classList.add("boom");
+        infoDisplay.textContent = "Your Ship has been hit!";
+        let classes = Array.from(e.target.classList);
+        classes = classes.filter((className) => className !== "block");
+        classes = classes.filter((className) => className !== "boom");
+        classes = classes.filter((className) => className !== "taken");
+        computerHits.push(...classes);
+      } else {
+        infoDisplay.textContent = "Computer has hit nothing";
+        allBoardBlocks[randomGo].classList.add("miss");
+      }
+    }, 3000);
+
+    setTimeout(() => {
+      playerTurn = true;
+      turnDisplay.textContent = "Your Turn!";
+      const allBoardBlocks = document.querySelectorAll("#computer div");
+      allBoardBlocks.forEach((block) =>
+        block.addEventListener("click", handleClick)
+      );
+    }, 6000);
+  }
+}
