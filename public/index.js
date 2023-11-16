@@ -167,7 +167,7 @@ function addShipPiece(user, ship, startId) {
       shipBlock.classList.add("taken");
     });
   } else {
-    if (user === "computer") addShipPiece(ship);
+    if (user === "computer") addShipPiece("computer", ship, startId);
     if (user === "player") notDropped = true;
   }
 }
@@ -197,8 +197,8 @@ function dragStart(e) {
 
 function dragOver(e) {
   e.preventDefault();
-  const ship = ships[draggedShip.id]
-  highlightArea(e.target.id, ship)
+  const ship = ships[draggedShip.id];
+  highlightArea(e.target.id, ship);
 }
 
 function dropShip(e) {
@@ -223,8 +223,13 @@ function highlightArea(startIndex, ship) {
 
   if (valid && notTaken) {
     shipBlocks.forEach((shipBlock) => {
-      shipBlock.classList.add("hover");
-      setTimeout(() => shipBlock.classList.remove("hover"), 500);
+      shipBlock.classList.add("hover-valid");
+      setTimeout(() => shipBlock.classList.remove("hover-valid"), 500);
+    });
+  } else {
+    shipBlocks.forEach((shipBlock) => {
+      shipBlock.classList.add("hover-taken");
+      setTimeout(() => shipBlock.classList.remove("hover-taken"), 500);
     });
   }
 }
