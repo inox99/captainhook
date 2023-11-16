@@ -140,3 +140,7 @@ ul li {
 .empty {
   background-color: grey;
 }
+
+.miss {
+  background-color: black;
+}

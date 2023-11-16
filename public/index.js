@@ -50,6 +50,8 @@ document.getElementById("options-button").addEventListener("click", () => {
 const optionContainer = document.querySelector(".option-container");
 const flipButton = document.querySelector("#flip-button");
 const gamesBoardContainer = document.querySelector("#gamesboard-container");
+const startButton = document.querySelector("#start-button");
+const infoDisplay = document.querySelector("#info");
 //================================
 //ROTATE FUNCTION IN SHIPS CONTAINER
 let angle = 0;
@@ -221,8 +223,6 @@ function highlightArea(startIndex, ship) {
     ship
   );
 
-  
-
   if (valid && notTaken) {
     shipBlocks.forEach((shipBlock) => {
       shipBlock.classList.add("hover-valid");
@@ -235,3 +235,33 @@ function highlightArea(startIndex, ship) {
     });
   }
 }
+
+let gameOver = false;
+let playerTurn;
+
+// Start Game
+function startGame() {
+  if (optionContainer.children.length != 0) {
+    infoDisplay.textContent = "Please place all your pieces first!";
+  } else {
+    infoDisplay.textContent = "Game started!";
+    const allBoardBlocks = document.querySelectorAll("#computer div");
+    allBoardBlocks.forEach((block) =>
+      block.addEventListener("click", handleClick)
+    );
+  }
+}
+
+function handleClick(e) {
+  if (!gameOver) {
+    if (e.target.classList.contains("taken")) {
+      e.target.classList.add("boom");
+      infoDisplay.textContent = "You made a hit!";
+    } else {
+      e.target.classList.add("miss");
+      infoDisplay.textContent = "You missed!";
+    }
+  }
+}
+
+startButton.addEventListener("click", startGame);
