@@ -221,15 +221,17 @@ function highlightArea(startIndex, ship) {
     ship
   );
 
+  
+
   if (valid && notTaken) {
     shipBlocks.forEach((shipBlock) => {
       shipBlock.classList.add("hover-valid");
-      setTimeout(() => shipBlock.classList.remove("hover-valid"), 500);
+      setTimeout(() => shipBlock.classList.remove("hover-valid"), 100);
     });
   } else {
     shipBlocks.forEach((shipBlock) => {
       shipBlock.classList.add("hover-taken");
-      setTimeout(() => shipBlock.classList.remove("hover-taken"), 500);
+      setTimeout(() => shipBlock.classList.remove("hover-taken"), 100);
     });
   }
 }
