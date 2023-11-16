@@ -52,6 +52,7 @@ const flipButton = document.querySelector("#flip-button");
 const gamesBoardContainer = document.querySelector("#gamesboard-container");
 const startButton = document.querySelector("#start-button");
 const infoDisplay = document.querySelector("#info");
+const turnDisplay = document.querySelector("#turn-display");
 //================================
 //ROTATE FUNCTION IN SHIPS CONTAINER
 let angle = 0;
@@ -246,6 +247,7 @@ function startGame() {
   if (optionContainer.children.length != 0) {
     infoDisplay.textContent = "Please place all your pieces first!";
   } else {
+    turnDisplay.textContent = "Your Turn!";
     infoDisplay.textContent = "Game started!";
     const allBoardBlocks = document.querySelectorAll("#computer div");
     allBoardBlocks.forEach((block) =>
@@ -254,6 +256,9 @@ function startGame() {
   }
 }
 startButton.addEventListener("click", startGame);
+
+let playerHits = [];
+let computerHits = [];
 
 function handleClick(e) {
   if (!gameOver) {
@@ -279,7 +284,7 @@ function handleClick(e) {
 }
 
 //Computer Turn
-function computerGo() {
+function computerGo(e) {
   if (!gameOver) {
     turnDisplay.textContent = "Computers Turn";
 
@@ -299,11 +304,12 @@ function computerGo() {
       ) {
         allBoardBlocks[randomGo].classList.add("boom");
         infoDisplay.textContent = "Your Ship has been hit!";
-        let classes = Array.from(e.target.classList);
+        let classes = Array.from(allBoardBlocks[randomGo].target.classList);
         classes = classes.filter((className) => className !== "block");
         classes = classes.filter((className) => className !== "boom");
         classes = classes.filter((className) => className !== "taken");
         computerHits.push(...classes);
+        console.log(computerHits);
       } else {
         infoDisplay.textContent = "Computer has hit nothing";
         allBoardBlocks[randomGo].classList.add("miss");
