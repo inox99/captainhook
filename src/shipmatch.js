@@ -3,15 +3,17 @@ import { CDb } from "./shipmatchDbLocalFS.js"
 
 const ShipMatchState = {
    init: 0,
-   running: 1,
+   waitforready: 1,
+   running: 2,
    canceled: -1,
-   finished: 2
+   finished: 3
 }
 
 const ShipMatchDv1 = {
    "id": undefined,
    "created": "",
    "state": 0,
+   "shotcounter": 0,
    "turn": 0,
    "dim": 10,
    //"ships": [[4, 1], [3, 2], [2, 3], [1, 4]],
@@ -32,18 +34,26 @@ class Player {
    dim;
    ownField;
    oppField;
-   constructor(id, shipMatch) {
+   shipMatch;
+   constructor(Id, ShipMatch) {
+      this.shipMatch = ShipMatch;
       this.dim = shipMatch.d.dim;
       if (id == 1) {
          this.name = shipMatch.d.player1;
          this.ownField = shipMatch.d.battlefield1;
          this.oppField = shipMatch.d.battlefield2;
       }
+      else if (id == 2) {
+         this.name = shipMatch.d.player2;
+         this.ownField = shipMatch.d.battlefield2;
+         this.oppField = shipMatch.d.battlefield1;
+      }
    }
    shoot(x, y) {
       if (x < 0 || x >= this.dim || y < 0 || y >= this.dim)
          return;
       this.oppField[y * 10 + x] = this.oppField[y * 10 + x] | 1;
+      throw new Error('Parameter is not a number!');
    }
 }
 
