@@ -30,8 +30,8 @@ async function getDb(cdb) {
 export class CDb extends ICdb {
    constructor() {
       super("shipmatch");
-      this.email = "inox99@arcor.de";
-      this.password = "inox99";
+      this.email = "***";
+      this.password = "***";
       this.db;
       this.error;
 
