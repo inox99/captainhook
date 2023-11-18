@@ -37,23 +37,23 @@ class Player {
    shipMatch;
    constructor(Id, ShipMatch) {
       this.shipMatch = ShipMatch;
-      this.dim = shipMatch.d.dim;
-      if (id == 1) {
-         this.name = shipMatch.d.player1;
-         this.ownField = shipMatch.d.battlefield1;
-         this.oppField = shipMatch.d.battlefield2;
+      this.dim = ShipMatch.d.dim;
+      if (Id == 1) {
+         this.name = ShipMatch.d.player1;
+         this.ownField = ShipMatch.d.battlefield1;
+         this.oppField = ShipMatch.d.battlefield2;
       }
-      else if (id == 2) {
-         this.name = shipMatch.d.player2;
-         this.ownField = shipMatch.d.battlefield2;
-         this.oppField = shipMatch.d.battlefield1;
+      else if (Id == 2) {
+         this.name = ShipMatch.d.player2;
+         this.ownField = ShipMatch.d.battlefield2;
+         this.oppField = ShipMatch.d.battlefield1;
       }
    }
    shoot(x, y) {
       if (x < 0 || x >= this.dim || y < 0 || y >= this.dim)
          return;
       this.oppField[y * 10 + x] = this.oppField[y * 10 + x] | 1;
-      throw new Error('Parameter is not a number!');
+      console.info("Player.shoot noch nicht fertig");
    }
 }
 
@@ -135,6 +135,5 @@ export class ShipMatch {
       for (let i = 0; i < this.d.dim; i++) {
          console.log(`${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}, ${b[n++]}`);
       }
-
    }
 }

@@ -68,8 +68,8 @@ async function testAuth() {
    }
    {
       //Get-Childitem -Path Env:* | Sort-Object Name
-      const email = "inox99@arcor.de";
-      const password = "inox99"
+      const email = process.env.fbEmail;
+      const password = process.env.fbpass;
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log(userCredential);
       {
@@ -90,32 +90,20 @@ async function testAuth() {
 
 async function testFb() {
 
-   //const uid = 'bK0SiHAtUSTYs7RDvartnST4gux1';
-   //const token = "ya29.a0AWY7CknAmuUJpEOpGUxK_8Lg5GIgRWRNp_1plsvfmrsjQRErbO9ej5q3lo4uURVL90Z2I96civofANFPrLTJiOqJ0KWWrX_6gFQRHHsF97dRESkJo7h8_Nz8Zbw7D0VgUuXwiubyMu2s23dmksDkXLG1NIN89l3BaCgYKAX0SARESFQG1tDrpI0A5Iw1byzB9TX9-V6UGzg0167";
-   //const token = "1//09oSfo8JBtlM7CgYIARAAGAkSNwF-L9IrgZhIQhOrFpxB902OThbKBJj6VFG5BW1i5hGXnibBhx28leiNh8OpLCTITaNyuBkLsTg"
-
    const app = initializeApp(firebaseConfig);
    const auth = getAuth();
    const db = getFirestore(app);
-   //connectFirestoreEmulator(db, 'localhost', 8080);
+   connectFirestoreEmulator(db, 'localhost', 8080);
 
    try {
-      // //const googleUser = await GoogleSignIn().signIn();
-      // //const id_token = googleUser.getAuthResponse().id_token
-
-      // const userCredential = await signInWithCustomToken(getAuth(), token);
-      // signInWithCredential(auth, credential);
-
       if (false) {
          //  code: 'auth/operation-not-supported-in-this-environment',
          const provider = new GoogleAuthProvider();
          const credential = await signInWithPopup(auth, provider);
       }
       if (true) {
-         // const email = "Claudia.Pilger98@gmail.com";
-         // const password = "Sm9k8jgbcbswYBA";
-         const email = "simon.pilger@icloud.com";
-         const password = "simon96";
+         const email = process.env.fbEmail;
+         const password = process.env.fbpass;
          const userCredential = await signInWithEmailAndPassword(auth, email, password);
       }
    }
@@ -124,14 +112,15 @@ async function testFb() {
       return;
    }
    try {
-
-      const Coll = collection(db, 'cities');
-      //const Coll = collection(db, 'bkorder');
-      console.log(`collection '${Coll.path}' `);
-      //const snap = await getCountFromServer(Coll);
-      //console.log(`collection '${Coll.path}' enthält ${snap.data().count} docs`);
-      if (true) {
-         const docRef = doc(db, "cities", "SF");
+      if (false) {
+         const Coll = collection(db, 'cities');
+         //const Coll = collection(db, 'bkorder');
+         console.log(`collection '${Coll.path}' `);
+         //const snap = await getCountFromServer(Coll);
+         //console.log(`collection '${Coll.path}' enthält ${snap.data().count} docs`);
+         if (true) {
+            const docRef = doc(db, "cities", "SF");
+         }
       }
       if (false) {
          const shipMatch = ShipMatch.createnew("otto");
@@ -178,7 +167,7 @@ async function ShipMatchTest() {
       {
          const shipMatch = await ShipMatch.load("1700054908642");
          shipMatch.logBattlefield(2);
-         shipMatch.player1.shoot(3,3);
+         shipMatch.player1.shoot(3, 3);
          shipMatch.logBattlefield(2);
          await shipMatch.save();
       }
@@ -196,7 +185,6 @@ async function ShipMatchTest() {
 //================================================================================
 
 const _ = 0;
-console.log(process.env.fbEmail);
-// testAuth();
+//testAuth();
 //testFb();
-//ShipMatchTest();
+ShipMatchTest();
