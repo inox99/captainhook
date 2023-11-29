@@ -1,0 +1,158 @@
+<!-- ******************************************
+*  Author : Author   
+*  Created On : Mon Nov 20 2023
+*  File : shipobject.html
+
+JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+
+******************************************* -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="author" content="Author">
+   <title>shipobject - Test</title>
+   <style>
+      .ship {
+         width: 20px;
+         height: 20px;
+         border: 1px solid black;
+         display: inline-block;
+      }
+   </style>
+
+   <script type="module">
+      //import { s1, s2, Player, ShipMatch } from "./shipmatch_.js";
+      // window.s1 = s1;
+      // window.s2 = s2;
+
+      import { ShipMatch } from "./shipmatch.js";
+      window.ShipMatch = ShipMatch;
+      //const shipmatch = new Shipmatch
+
+      // function t1() {
+      //    //const shipMatch = ShipMatch.createnew("karl");
+      //    console.log("shipobject.html module - t1() called");
+      // }
+      //window.t1 = t1;
+   </script>
+   <script>
+      let g_dim;
+      let g_shipMatch;
+      let g_player1;
+      let g_battlefields = [[]];
+      let g_battlefield;
+      let g_socket;
+
+      function render() {
+         let n = 0;
+         for (i = 0; i < g_dim; i++) {
+            for (j = 0; j < g_dim; j++) {
+               let f = g_player1.oppField[n];
+               let e = g_battlefields[n];
+               if (f & 1 != 0) {
+                  e.style.backgroundColor = "blue";
+               }
+               n++;
+            }
+         }
+      }
+
+      function fieldClick_(ev) {
+         const e = ev.target;
+         e.style.backgroundColor = "blue";
+         console.log(`field: x:${e.x}, y:${e.x}`);
+      }
+
+      function fieldClick(ev) {
+         const e = ev.target;
+         g_player1.shoot(e.y, e.x);
+         g_shipMatch.save();
+         render();
+         console.log(`field: x:${e.x}, y:${e.x}`);
+      }
+
+      async function onLoaded() {
+      }
+
+      addEventListener("DOMContentLoaded", async (event) => {
+         const { shipMatch, player1 } = await ShipMatch.load("1700529143233");
+         g_dim = shipMatch.d.dim;
+         g_shipMatch = shipMatch;
+         g_player1 = player1;
+         g_battlefields = [];
+         g_battlefield = document.getElementById("battlefield");
+         let n = 0;
+         for (i = 0; i < g_dim; i++) {
+            const d = document.createElement("div");
+            g_battlefield.appendChild(d);
+            for (j = 0; j < g_dim; j++) {
+               const s = document.createElement("div");
+               s.addEventListener("click", fieldClick);
+               s.id = `bf${n}`;
+               s.x = j;
+               s.y = i;
+               s.classList.add("ship");
+               g_battlefields[n] = s;
+               d.appendChild(s);
+               n++;
+            }
+         }
+         render();
+      });
+      async function t1() {
+         if (false) {
+            const { shipMatch, player } = ShipMatch.createnew("karl");
+            shipMatch.save().then(
+               (value) => {
+                  console.log(value)
+               });
+         }
+         if (true) {
+            const { shipMatch, player1 } = await ShipMatch.load("1700529143233");
+            console.log(`g_dim: ${g_dim}`);
+            shipMatch.logBattlefield(1);
+            shipMatch.logBattlefield(2);
+         }
+      }
+
+      function connect() {
+         g_socket = io();
+      }
+
+      function send() {
+         const js = JSON.stringify(g_shipMatch.d);
+         g_socket.emit("shipobject", js);
+      }
+
+   </script>
+   <script src="/socket.io/socket.io.js"></script>
+
+</head>
+
+<body>
+   <!--      -->
+   <div style="margin-bottom: 4px;"> <a href=".">zurück</a>
+   </div>
+   <hr>
+   <div style="margin-top: 12px;">
+      <div id="battlefield">
+      </div>
+   </div>
+   <hr>
+   <div>
+      <button onclick="t1()">t1()</button>
+      <button onclick="connect()">connect()</button>
+      <button onclick="send()">send()</button>
+
+      <!-- <button onclick="s1()">s1()</button>
+      <button onclick="s2()">s2()</button> -->
+
+      <button
+         onclick="{const { shipMatch, player1 }= ShipMatch.createnew('karl');shipMatch.logBattlefield(1)}">ShipMatch.createnew('karl')</button>
+   </div>
+</body>
+
+</html>

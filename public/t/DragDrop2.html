@@ -1,0 +1,125 @@
+<!-- ******************************************
+*  Author : Author   
+*  Created On : Fri Nov 24 2023
+*  File : DragDrop2.html
+******************************************* -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="author" content="Author">
+   <meta name="viewport" content="width=device-width" />
+   <title>Drag&Drop 2 - Test</title>
+   <style>
+      .ship {
+         width: 20px;
+         height: 20px;
+         border: 1px solid black;
+         display: inline-block;
+      }
+
+      .ship1 {
+         background: blue;
+         width: 80px;
+      }
+
+      .ship2 {
+         width: 60px;
+         background: red;
+      }
+   </style>
+</head>
+
+<body>
+   <div style="margin: 10px 0px;"> <a href=".">zurück</a>
+      <hr>
+   </div>
+   <div id="battlefield">
+      <div id="bf1" class="ship">
+
+      </div>
+   </div>
+   <div style="margin-top: 12px;">
+      <div id="ship1" class="ship ship1" draggable="true"></div>
+      <div id="ship2" class="ship ship2" draggable="true"></div>
+   </div>
+</body>
+
+<script>
+   let draggingElement = undefined;
+
+   function ondragstart(ev) {
+      ev.dataTransfer.setData('text/plain', '');
+      ev.dataTransfer.dropEffect = "copy";
+      draggingElement = ev.target;
+      console.log(`dragstart event fired on draggable ${ev.target.id}`);
+   }
+
+   function ondragend(ev) {
+      draggingElement = undefined;
+      console.log(`dragend event fired on draggable ${ev.target.id}`);
+   }
+
+   {
+      const draggables = document.querySelectorAll('[draggable="true"]');
+      draggables.forEach((e) => {
+         e.addEventListener('dragstart', ondragstart);
+         e.addEventListener('dragend', ondragend);
+      });
+
+      // draggable.addEventListener('dragstart', (ev) => {
+      //    ev.dataTransfer.setData('text/plain', '');
+      //    ev.dataTransfer.dropEffect = "copy";
+
+      //    draggingElement = draggable;
+      //    console.log(`dragstart event fired on draggable ${ev.target.id}`);
+      // });
+
+      // draggable.addEventListener('dragend', (ev) => {
+      //    draggingElement = undefined;
+      //    console.log(`dragend event fired on draggable ${ev.target.id}`);
+      // });
+   }
+   {
+      const draggable = document.getElementById('bf1');
+      draggable.addEventListener('dragover', (ev) => {
+         ev.preventDefault();
+         ev.dataTransfer.dropEffect = "move";
+         console.log(`dragover event fired on draggable ${ev.target.id}`);
+      });
+
+      draggable.addEventListener('drop', (ev) => {
+         if (draggingElement != undefined) {
+            const s = draggingElement;
+            const d = document.getElementById(ev.target.id);
+            const compStyles = window.getComputedStyle(s);
+            const bcol = compStyles.getPropertyValue("background-color");
+            d.style.backgroundColor = bcol;
+         }
+         draggingElement = undefined;
+         console.log(`drop event fired on draggable ${ev.target.id}`);
+      });
+   }
+   // // Initialize drag container and drop zone.
+   // const dragContainer = document.getElementById('container');
+   // dragContainer.addEventListener('dragenter', (e) => {
+   //    if (!draggingElement) return;
+
+   //    e.preventDefault();
+   //    console.log('dragenter event fired on container');
+   // });
+   // dragContainer.addEventListener('dragover', (e) => {
+   //    if (!draggingElement) return;
+
+   //    e.preventDefault();
+   // });
+   // dragContainer.addEventListener('drop', () => {
+   //    if (!draggingElement) return;
+
+   //    console.log(`dropping element w/ id: "${draggingElement.getAttribute('id')}"`);
+   // });
+</script>
+
+</html>

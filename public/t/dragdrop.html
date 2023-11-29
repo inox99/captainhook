@@ -1,0 +1,121 @@
+<!-- ******************************************
+*  Author : Author   
+*  Created On : Sun Nov 19 2023
+*  File : h1.html
+******************************************* 
+
+HTML Drag and Drop API  https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+
+-->
+
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="author" content="Author">
+   <meta name="viewport" content="width=device-width" />
+   <title>Drag&Drop - Test</title>
+   <style>
+      .ship {
+         width: 20px;
+         height: 20px;
+         border: 1px solid black;
+         display: inline-block;
+      }
+
+      .ship1 {
+         background: blue;
+         width: 80px;
+      }
+
+      .ship2 {
+         width: 60px;
+         background: red;
+      }
+   </style>
+</head>
+
+<body>
+   <div style="margin: 10px 0px;"> <a href=".">zurück</a>
+      <hr>
+   </div>
+   <div id="battlefield">
+   </div>
+   <div style="margin-top: 12px;">
+      <div id="ship1" class="ship ship1"></div>
+      <div id="ship2" class="ship ship2"></div>
+   </div>
+</body>
+<script>
+   // es qird ein glogales hilfsobjekt benötigt, da bei dragover nicht richtig auf das drageent zugegriffen werden kann
+   const g_dragEvent = {
+      e: null,
+      set(elem) {
+         e = elem;
+      },
+      get() {
+         return e;
+      },
+      clear() {
+         e = null;
+      }
+   }
+
+   function fieldClick(ev) {
+      const e = ev.target;
+      console.log(e.x);
+   }
+
+   function dragstartHandler(ev) {
+      g_dragEvent.set(ev.target);
+      console.log(`dragstart id:'${ev.target.id}'`);
+   }
+
+   function dragoverHandler(ev) {
+      //ev.preventDefault();
+      const zielElement = ev.target;
+      const dragElement = g_dragEvent.get();
+      const allowdrop = dragElement.d.orientation == "h" ? (g_dim - zielElement.x) < dragElement.d.sz : false;
+      if (!allowdrop)
+         ev.preventDefault();
+      //ev.dataTransfer.dropEffect = "move";
+      //console.log(`dragover ziel{id:${zielElement.id}, x:${zielElement.x}, y:${zielElement.y}} drag{ev.id:${dragElement.id},}`);
+   }
+
+   function dragendHandler(ev) {
+      g_dragEvent.clear();
+   }
+
+   const g_dim = 10;
+   const g_battlefields = [[]];
+   const g_battlefield = document.getElementById("battlefield");
+   for (i = 0; i < g_dim; i++) {
+      const d = document.createElement("div");
+      g_battlefield.appendChild(d);
+      for (j = 0; j < g_dim; j++) {
+         const s = document.createElement("div");
+         s.addEventListener("click", fieldClick);
+         s.setAttribute("ondragover", "dragoverHandler(event)");
+         s.id = `bf${i * 10 + j}`;
+         s.x = j;
+         s.y = i;
+         s.classList.add("ship");
+         g_battlefields[i, j] = s;
+         d.appendChild(s);
+      }
+   }
+   {
+      const ship1 = document.getElementById("ship1");
+      ship1.d = { sz: 4, orientation: 'h' };
+      ship1.addEventListener("dragstart", dragstartHandler);
+      ship1.setAttribute("draggable", true);
+      ship1.addEventListener("dragend", dragendHandler);
+      const ship2 = document.getElementById("ship2");
+      ship2.d = { sz: 3, orientation: 'h' };
+      ship2.addEventListener("dragstart", dragstartHandler);
+      ship2.setAttribute("draggable", true);
+      ship2.addEventListener("dragend", dragendHandler);
+   }
+</script>
+</html>

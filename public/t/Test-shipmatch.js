@@ -155,29 +155,29 @@ async function testFb() {
 async function ShipMatchTest() {
    const _ = 0;
    try {
-      // {
-      //    const shipMatch = ShipMatch.createnew("karl");
-      //    await shipMatch.save();
-      // }
-      // {
-      //    const shipMatch = await ShipMatch.load("1700054908642");
-      //    new FbDb().save(shipMatch );
-      //    //shipMatch.logBattlefield(2);
-      // }
-      {
+      if (false) {
+         const shipMatch = ShipMatch.createnew("karl");
+         await shipMatch.save();
+      }
+      if (false) {
          const shipMatch = await ShipMatch.load("1700054908642");
+         new FbDb().save(shipMatch);
+         //shipMatch.logBattlefield(2);
+      }
+      if (false) {
+         const { shipMatch, player1 } = ShipMatch.createnew("karl");
          shipMatch.logBattlefield(2);
-         shipMatch.player1.shoot(3, 3);
+         //await shipMatch.save();
+         player1.shoot(2, 2);
+         shipMatch.logBattlefield(2);
+      }
+      if (true) {
+         const { shipMatch, player1 } = await ShipMatch.load("1700054908642");
+         shipMatch.logBattlefield(2);
+         player1.shoot(9, 3);
          shipMatch.logBattlefield(2);
          await shipMatch.save();
       }
-      // {
-      //    const shipMatch = ShipMatch.createnew("karl");
-      //    shipMatch.logBattlefield(2);
-      //    //await shipMatch.save();
-      //    shipMatch.player1.shoot(1,1);
-      //    shipMatch.logBattlefield(2);
-      // }
    } catch (error) {
       console.error(`executing ShipMatchTest, error${error}`);
    }

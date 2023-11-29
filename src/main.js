@@ -8,11 +8,18 @@ const io = new Server(httpServer);
 const port = 3000;
 
 io.on("connect", (socket) => {
-  console.log("user connected", socket.id);
+   console.log("user connected", socket.id);
+   socket.on('disconnect', () => {
+      console.log('user disconnected');
+   });
+   socket.on('shipobject', (msg) => {
+      const jo = JSON.parse(msg);
+      console.log(`shipobject: id:${jo.id}`);
+   });
 });
 
 app.use(express.static("public"));
 
 httpServer.listen(port, () => {
-  console.log(`App Listening on port ${port}`);
+   console.log(`App Listening on port ${port}`);
 });

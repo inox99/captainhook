@@ -1,5 +1,6 @@
-import { CDb } from "./shipmatchDbLocalFS.js"
+//import { CDb } from "./shipmatchDbLocalFS.js"
 //import { CDb } from "./shipmatchDbFirebase.js"
+import { CDb } from "./shipmatchDbLocalStorage.js"
 
 const ShipMatchState = {
    init: 0,
@@ -24,9 +25,9 @@ const ShipMatchDv1 = {
       "1": 4,
    },
    "player1": "",
-   "battlefield1": {},
+   "battlefield1": [],
    "player2": "",
-   "battlefield2": {},
+   "battlefield2": [],
 }
 
 class Player {
@@ -49,39 +50,30 @@ class Player {
          this.oppField = ShipMatch.d.battlefield1;
       }
    }
-   shoot(x, y) {
+   shoot(y, x) {
       if (x < 0 || x >= this.dim || y < 0 || y >= this.dim)
-         return;
+         return null;
       this.oppField[y * 10 + x] = this.oppField[y * 10 + x] | 1;
+      return this.oppField[y * 10 + x];
       console.info("Player.shoot noch nicht fertig");
    }
 }
 
-export class ShipMatch {
+//export class ShipMatch {
+class ShipMatch {
    d;
    player1;
    player2;
    constructor() {
       this.db = new CDb();
-      // this.d = ShipMatchDv1;
-      // this.d.id = this.d.created = Date.now();
-      // this.d.player1.id = player;
-      // this.d.state = ShipMatchState.init;
-      // for (let i = 0; i < this.d.dim; i++) {
-      //    this.d.player1.battlefield[i] = [];
-      //    this.d.player2.battlefield[i] = [];
-      //    for (let j = 0; j < this.d.dim; j++) {
-      //       this.d.player1.battlefield[i][j] = 0;
-      //       this.d.player2.battlefield[i][j] = 0;
-      //    }
-      // }
    }
-   static createnew(player) {
+   static createnew(playerId) {
       const shipMatch = new ShipMatch();
       shipMatch.d = ShipMatchDv1;
       shipMatch.d.id = (shipMatch.d.created = Date.now()).toString();
-      shipMatch.d.player1 = player;
       shipMatch.d.state = ShipMatchState.init;
+      shipMatch.d.player1 = playerId;
+      shipMatch.player1 = new Player(1, shipMatch);
       for (let i = 0; i < shipMatch.d.dim * shipMatch.d.dim; i++) {
          shipMatch.d.battlefield1[i] = 0;
          shipMatch.d.battlefield2[i] = 0;
@@ -95,15 +87,17 @@ export class ShipMatch {
       //       shipMatch.d.player2.battlefield[i][j] = 0;
       //    }
       // }
-      return shipMatch;
+      return { shipMatch: shipMatch, player1: shipMatch.player1 };
    }
 
    static async load(id) {
       try {
          const shipMatch = new ShipMatch();
-         shipMatch.d = JSON.parse(await shipMatch.db.load(id));
+         //shipMatch.d = JSON.parse(await shipMatch.db.load(id));
+         shipMatch.d = await shipMatch.db.load(id);
+
          shipMatch.player1 = new Player(1, shipMatch);
-         return shipMatch;
+         return { shipMatch: shipMatch, player1: shipMatch.player1 };
       }
       catch (error) {
          console.error(`could not load object ${id}, ${error}`)
@@ -114,6 +108,7 @@ export class ShipMatch {
    async save() {
       try {
          await this.db.save(this.d);
+         return this.d.id;
       }
       catch (error) {
          console.error(`could not save object ${this.d.id}, ${error}`)
@@ -137,3 +132,10 @@ export class ShipMatch {
       }
    }
 }
+
+function getShipMatch() {
+   return ShipMatch.createnew("otto");
+}
+
+
+export { ShipMatch, getShipMatch }
