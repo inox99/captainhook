@@ -4,7 +4,7 @@ import { getFirestore, connectFirestoreEmulator, collection, getCountFromServer,
 
 import { ShipMatch } from "./shipmatch.js";
 import { CDb as FbDb } from "./shipmatchDbFirebase.js";
-import { shipmatchClient } from "./shipmatch-client.js"
+import { shipmatchClient } from "./shipmatchClient.js"
 
 /*===============================================================================================================
    

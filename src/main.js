@@ -1,7 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { shipmatchServer } from "../public/t/shipmatch-server.js";
+import { shipmatchServer } from "../public/t/shipmatchServer.js";
 
 const app = express();
 const httpServer = createServer(app);
