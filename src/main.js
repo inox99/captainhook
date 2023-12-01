@@ -1,6 +1,7 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { shipmatchServer } from "../public/t/shipmatch-server.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -13,8 +14,8 @@ io.on("connect", (socket) => {
       console.log('user disconnected');
    });
    socket.on('shipobject', (msg) => {
-      const jo = JSON.parse(msg);
-      console.log(`shipobject: id:${jo.id}`);
+      console.log(`shipobject request received`);
+      shipmatchServer.onRequest(socket, msg);
    });
 });
 

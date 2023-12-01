@@ -3,8 +3,8 @@ import { getAuth, GoogleAuthProvider, signOut, signInWithEmailAndPassword, signI
 import { getFirestore, connectFirestoreEmulator, collection, getCountFromServer, doc, addDoc, setDoc, getDoc, getDocs } from "firebase/firestore";
 
 import { ShipMatch } from "./shipmatch.js";
-
-import { CDb as FbDb } from "./shipmatchDbFirebase.js"
+import { CDb as FbDb } from "./shipmatchDbFirebase.js";
+import { shipmatchClient } from "./shipmatch-client.js"
 
 /*===============================================================================================================
    
@@ -88,6 +88,16 @@ async function testAuth() {
    }
 }
 
+const testObject = {
+   f1() {
+      console.debug(`testObject.f1() called`);
+      this["f2"]();
+   },
+   f2() {
+      console.debug(`testObject.f2() called`);
+   }
+}
+
 async function testFb() {
 
    const app = initializeApp(firebaseConfig);
@@ -97,9 +107,8 @@ async function testFb() {
 
    try {
       if (false) {
-         //  code: 'auth/operation-not-supported-in-this-environment',
          const provider = new GoogleAuthProvider();
-         const credential = await signInWithPopup(auth, provider);
+         const credential = await signInWithPopup(auth, provider);   //  code: 'auth/operation-not-supported-in-this-environment',
       }
       if (true) {
          const email = process.env.fbEmail;
@@ -182,9 +191,23 @@ async function ShipMatchTest() {
       console.error(`executing ShipMatchTest, error${error}`);
    }
 }
-//================================================================================
 
+function ShipMatchSocketTest() {
+   //socket.disconnect();
+   let socket = shipmatchClient.connect();
+   //shipmatchClient.test();
+   //console.log(`ShipMatchSocketTest, socket.id: ${socket.id}`);
+   setTimeout(() => {
+      console.log(`ShipMatchSocketTest, socket.id: ${socket.id}`);
+      shipmatchClient.test();
+   }, "1000");
+
+}
+
+//================================================================================
 const _ = 0;
+//testObject.f1();
 //testAuth();
 //testFb();
-ShipMatchTest();
+//ShipMatchTest();
+ShipMatchSocketTest();

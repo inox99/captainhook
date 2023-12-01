@@ -103,14 +103,14 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
          render();
       });
       async function t1() {
-         if (false) {
+         if (true) {
             const { shipMatch, player } = ShipMatch.createnew("karl");
             shipMatch.save().then(
                (value) => {
                   console.log(value)
                });
          }
-         if (true) {
+         if (false) {
             const { shipMatch, player1 } = await ShipMatch.load("1700529143233");
             console.log(`g_dim: ${g_dim}`);
             shipMatch.logBattlefield(1);

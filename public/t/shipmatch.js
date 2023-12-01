@@ -15,7 +15,7 @@ const ShipMatchDv1 = {
    "created": "",
    "state": 0,
    "shotcounter": 0,
-   "turn": 0,
+   "turn1": true,
    "dim": 10,
    //"ships": [[4, 1], [3, 2], [2, 3], [1, 4]],
    "ships": {
@@ -133,9 +133,4 @@ class ShipMatch {
    }
 }
 
-function getShipMatch() {
-   return ShipMatch.createnew("otto");
-}
-
-
-export { ShipMatch, getShipMatch }
+export { ShipMatch }
