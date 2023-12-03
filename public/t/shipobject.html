@@ -13,6 +13,7 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
 <head>
    <meta charset="UTF-8">
    <meta name="author" content="Author">
+   <meta name="viewport" content="width=device-width" />
    <title>shipobject - Test</title>
    <style>
       .ship {
@@ -123,8 +124,8 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
       }
 
       function send() {
-         const js = JSON.stringify(g_shipMatch.d);
-         g_socket.emit("shipobject", js);
+         //const js = JSON.stringify(g_shipMatch.d);
+         g_socket.emit("shipobject", g_shipMatch.d);
       }
 
    </script>

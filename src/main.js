@@ -13,10 +13,19 @@ io.on("connect", (socket) => {
    socket.on('disconnect', () => {
       console.log('user disconnected');
    });
-   socket.on('shipobject', (msg) => {
-      console.log(`shipobject request received`);
-      shipmatchServer.onRequest(socket, msg);
+
+   io.on("connection", (socket) => {
+      socket.on("shipobject", (msg, callback) => {
+         console.log(`shipobject request received`);
+         const jo = shipmatchServer.onRequest(msg);
+         callback(jo);
+      });
    });
+
+   // socket.on('shipobject', (msg) => {
+   //    console.log(`shipobject request received`);
+   //    const jo = shipmatchServer.onRequest(socket, msg);
+   // });
 });
 
 app.use(express.static("public"));
