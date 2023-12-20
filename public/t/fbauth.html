@@ -3,9 +3,17 @@
 *  Created On : Mon Nov 20 2023
 *  File : fbauth.html
 
-Firebase Authentication                                 https://firebase.google.com/docs/
-Add Firebase to your JavaScript project                 https://firebase.google.com/docs/web/setup
-Easily add sign-in to your Web app with FirebaseUI      https://firebase.google.com/docs/auth/web/firebaseui
+Firebase Authentication                                     https://firebase.google.com/docs/
+Add Firebase to your JavaScript project                     https://firebase.google.com/docs/web/setup
+Learn more about Web and Firebase                           https://firebase.google.com/docs/web/learn-more
+Alternative ways to add Firebase to your JavaScript project https://firebase.google.com/docs/web/alt-setup
+Authentication using Firebase for Express.js                https://dev.to/deepakshisood/authentication-using-firebase-for-expressjs-2l48
+
+ Securing your express/Node.js API with Firebase auth       https://dev.to/emeka/securing-your-express-node-js-api-with-firebase-auth-4b5f
+  Authentication using Firebase for Express.js              https://dev.to/deepakshisood/authentication-using-firebase-for-expressjs-2l48
+ 
+Easily add sign-in to your Web app with FirebaseUI          https://firebase.google.com/docs/auth/web/firebaseui
+
 
 ******************************************* -->
 
@@ -29,16 +37,19 @@ Easily add sign-in to your Web app with FirebaseUI      https://firebase.google.
 
     <dialog>
         <p>Login Firebase</p>
-        <span>Email </span>
+        <label for="iEmail">Email </label>
         <input id="iEmail">
         <br>
-        <span>Passwort </span>
+        <label for="iPasswort">Passwort </label>
         <input id="iPasswort" type="password" aria-label="">
         <br>
         <br>
         <button autofocus onclick="dialog.close();">Cancel</button>
         <button onclick="signInWithEmailAndPassword();">signInWithEmailAndPassword</button>
     </dialog>
+    <div>
+
+    </div>
 
     <button onclick="dialog.showModal();">Login</button>
     <button onclick="dialog.showModal();">Register</button>
@@ -50,6 +61,7 @@ Easily add sign-in to your Web app with FirebaseUI      https://firebase.google.
     import * as auth from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js'
     import * as app from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js'
     //import { initializeApp }  from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js'
+    import { shipmatchClient } from "./shipmatchClient.js"
 
     const firebaseConfig = {
         apiKey: "AIzaSyBFJ29U37VB1pMv3-fVzps2kMX4DY4uLaY",
@@ -63,11 +75,13 @@ Easily add sign-in to your Web app with FirebaseUI      https://firebase.google.
 
     window.auth = auth;
     window.app = app;
+    window.shipmatchClient = shipmatchClient;
 </script>
 <script>
     const dialog = document.querySelector("dialog");
+    let user = null;
 
-    function signInWithPopup() {
+    function signInWithPopup() { // geht nicht bei email-auth.!?
         const app = window.app;
         const auth = window.auth;
         const Auth = window.auth.getAuth();
@@ -101,7 +115,7 @@ Easily add sign-in to your Web app with FirebaseUI      https://firebase.google.
         auth.signInWithEmailAndPassword(Auth, email, password)
             .then((userCredential) => {
                 // Signed in 
-                const user = userCredential.user;
+                user = userCredential.user;
                 console.debug(user);
                 // ...
             })

@@ -2,8 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signOut, signInWithEmailAndPassword, signInWithPopup, signInWithCredential, signInWithCustomToken } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator, collection, getCountFromServer, doc, addDoc, setDoc, getDoc, getDocs } from "firebase/firestore";
 
-import { ShipMatch } from "./shipmatch.js";
+import { ShipMatch, shipMatch } from "./shipmatch.js";
 import { CDb as FbDb } from "./shipmatchDbFirebase.js";
+import { CDb as LfsDb } from "./shipmatchDbLocalFS.js";
 import { shipmatchClient } from "./shipmatchClient.js"
 
 /*===============================================================================================================
@@ -50,10 +51,52 @@ const firebaseConfig = {
    messagingSenderId: "83662903845",
    appId: "1:83662903845:web:02ac1e67abd7a3b6d3bdcc"
 };
-
 async function testAuth() {
+   /*
+      https://firebase.google.com/docs/auth/web/password-auth
+      https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth
+   
+   */
    const app = initializeApp(firebaseConfig);
    const auth = getAuth();
+   if (false) {
+      //export declare function createUserWithEmailAndPassword(auth: Auth, email: string, password: string): Promise<UserCredential>;
+      const email = process.env.fbEmail;
+      const password = process.env.fbpass;
+
+
+   }
+   {
+      //Get-Childitem -Path Env:* | Sort-Object Name
+      const email = process.env.fbEmail;
+      const password = process.env.fbpass;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCredential);
+      if (false) {
+         const user = auth.currentUser;
+         if (user !== null) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            // ...
+            console.log(user);
+         } else {
+            // No user is signed in.
+            console.log("No user is signed in");
+         }
+      }
+      if (true) {
+         //export declare function signInWithCredential(auth: Auth, credential: AuthCredential): Promise<UserCredential>;
+         await signOut(auth);
+         await signInWithCredential(auth, userCredential);
+         const user = auth.currentUser;
+      }
+      if (false) {
+         //async function signInWithCustomToken(auth, customToken)
+         const user = auth.currentUser;
+         const token = await user.getIdToken(); //funktioniert nicht, da token dafür nicht geeignet
+         await signInWithCustomToken(auth, token);
+      }
+   }
    {
       const user = auth.currentUser;
       if (user) {
@@ -66,28 +109,9 @@ async function testAuth() {
          console.log("No user is signed in");
       }
    }
-   {
-      //Get-Childitem -Path Env:* | Sort-Object Name
-      const email = process.env.fbEmail;
-      const password = process.env.fbpass;
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCredential);
-      {
-         const user = auth.currentUser;
-         if (user) {
-            // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/auth.user
-            // ...
-            console.log(user);
-         } else {
-            // No user is signed in.
-            console.log("No user is signed in");
-         }
-      }
-      signOut(auth);
-   }
+   if (auth.currentUser)
+      await signOut(auth);
 }
-
 const testObject = {
    f1() {
       console.debug(`testObject.f1() called`);
@@ -97,11 +121,11 @@ const testObject = {
       console.debug(`testObject.f2() called`);
    }
 }
-
 async function testFb() {
 
    const app = initializeApp(firebaseConfig);
    const auth = getAuth();
+
    const db = getFirestore(app);
    connectFirestoreEmulator(db, 'localhost', 8080);
 
@@ -160,7 +184,6 @@ async function testFb() {
    }
    signOut(auth);
 }
-
 async function ShipMatchTest() {
    const _ = 0;
    try {
@@ -180,28 +203,47 @@ async function ShipMatchTest() {
          player1.shoot(2, 2);
          shipMatch.logBattlefield(2);
       }
-      if (true) {
+      if (false) {
          const { shipMatch, player1 } = await ShipMatch.load("1700054908642");
          shipMatch.logBattlefield(2);
          player1.shoot(9, 3);
          shipMatch.logBattlefield(2);
          await shipMatch.save();
       }
+      if (true) {
+         shipMatch.assignDb(new LfsDb());
+         const shipmathList = await shipMatch.list();
+         shipmathList.map(fileName => {
+            console.log(fileName);
+         });
+      }
+      if (true) {
+      }
    } catch (error) {
       console.error(`executing ShipMatchTest, error${error}`);
    }
 }
-
 function ShipMatchSocketTest() {
    //socket.disconnect();
    let socket = shipmatchClient.connect();
    //shipmatchClient.test();
    //console.log(`ShipMatchSocketTest, socket.id: ${socket.id}`);
-   setTimeout(() => {
+   setTimeout(async () => {
       console.log(`ShipMatchSocketTest, socket.id: ${socket.id}`);
-      shipmatchClient.test();
-   }, "1000");
+      const response = shipmatchClient.test_({ func: "echo" });   // NOK response undefined
+      //const response = await shipmatchClient.test_({ func: "list" });
 
+      //const response = await shipmatchClient.test({ func: "echo" }); // OK
+      //const response = await shipmatchClient.test({ func: "list" }); // ok but empty
+      console.log(response);
+   }, 1000);
+
+   // shipmatchClient.connect(async (socket) => {
+   //    console.log(`shipmatchClient.connect, socket.id: ${socket.id}`);
+   //    const response = await shipmatchClient.test({ func: "list" });
+   //    console.log(response);
+   //    //socket.close();
+   // });
 }
 
 //================================================================================
@@ -211,3 +253,7 @@ const _ = 0;
 //testFb();
 //ShipMatchTest();
 ShipMatchSocketTest();
+
+// // (async () => {
+// //    await ShipMatchSocketTest();
+// // })();

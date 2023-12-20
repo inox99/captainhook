@@ -1,7 +1,7 @@
-
 Schiffe versenken
 
 https://github.com/TaiSonRZR/captainhook
+https://github.com/inox99/captainhook.git
 
 Spielkonzept:
 

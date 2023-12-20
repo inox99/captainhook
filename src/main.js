@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { shipmatchServer } from "../public/t/shipmatchServer.js";
+import { shipmatchServerTest } from "../public/t/shipmatchServerTest.js";
 
 const app = express();
 const httpServer = createServer(app);
@@ -15,10 +16,13 @@ io.on("connect", (socket) => {
    });
 
    io.on("connection", (socket) => {
-      socket.on("shipobject", (msg, callback) => {
+      socket.on("shipobject", (msg) => {
          console.log(`shipobject request received`);
          const jo = shipmatchServer.onRequest(msg);
-         callback(jo);
+      });
+      socket.on("shipmatchtest", (msg) => {
+         console.log(`shipmatchtest request received`);
+         const jo = shipmatchServerTest.onRequest(msg);
       });
    });
 

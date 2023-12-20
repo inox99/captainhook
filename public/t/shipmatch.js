@@ -1,6 +1,7 @@
 //import { CDb } from "./shipmatchDbLocalFS.js"
 //import { CDb } from "./shipmatchDbFirebase.js"
 import { CDb } from "./shipmatchDbLocalStorage.js"
+import { CDb as ICDb } from "./shipmatchIDb.js"
 
 const ShipMatchState = {
    init: 0,
@@ -59,12 +60,11 @@ class Player {
    }
 }
 
-//export class ShipMatch {
 class ShipMatch {
    d;
    player1;
    player2;
-   constructor() {
+   constructor(Db) {
       this.db = new CDb();
    }
    static createnew(playerId) {
@@ -133,4 +133,14 @@ class ShipMatch {
    }
 }
 
-export { ShipMatch }
+const shipMatch = {
+   db: new ICDb(),
+   assignDb(Db) {
+      this.db = Db;
+   },
+   async list() {
+      return this.db.list();
+   }
+}
+
+export { ShipMatch, shipMatch }

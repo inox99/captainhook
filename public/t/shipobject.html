@@ -23,7 +23,7 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
          display: inline-block;
       }
    </style>
-
+   <script src="/socket.io/socket.io.js"></script>
    <script type="module">
       //import { s1, s2, Player, ShipMatch } from "./shipmatch_.js";
       // window.s1 = s1;
@@ -47,6 +47,9 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
       let g_battlefield;
       let g_socket;
 
+      function login() {
+
+      }
       function render() {
          let n = 0;
          for (i = 0; i < g_dim; i++) {
@@ -75,10 +78,7 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
          console.log(`field: x:${e.x}, y:${e.x}`);
       }
 
-      async function onLoaded() {
-      }
-
-      addEventListener("DOMContentLoaded", async (event) => {
+      async function onLoaded(event) {
          const { shipMatch, player1 } = await ShipMatch.load("1700529143233");
          g_dim = shipMatch.d.dim;
          g_shipMatch = shipMatch;
@@ -102,7 +102,9 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
             }
          }
          render();
-      });
+      }
+
+      addEventListener("DOMContentLoaded", onLoaded);
       async function t1() {
          if (true) {
             const { shipMatch, player } = ShipMatch.createnew("karl");
@@ -129,13 +131,21 @@ JavaScript modules      https://developer.mozilla.org/en-US/docs/Web/JavaScript/
       }
 
    </script>
-   <script src="/socket.io/socket.io.js"></script>
-
 </head>
 
 <body>
    <!--      -->
    <div style="margin-bottom: 4px;"> <a href=".">zurück</a>
+   </div>
+   <hr>
+   <div style="margin: 8px;">
+      <div id="login">
+         <label for="iName">Name oder Email(bei firebase)</label><input id="iName"><label for="iPassword"> Passwort </label><input id="iPassword">
+         <button>Login</button>
+      </div>
+      <div id="logout">
+         <label>Current User: </label><input id="iUser" readonly></span>
+      </div>
    </div>
    <hr>
    <div style="margin-top: 12px;">
